@@ -44,10 +44,14 @@ This function should only modify configuration layer settings."
      syntax-checking ;; might require dictionary ispell, hunspell, aspell
      git
      docker
+     (spell-checking :variables 
+      spell-checking-enable-by-default nil
+      spell-checking-enable-auto-dictionary t)
      ;; org
      ;; version-control
      ;; fasd ;; brew install fasd
      ;; languages
+     ;; http://develop.spacemacs.org/layers/+lang/go/README.html#configuration
      (go :variables
          go-use-golangci-lint t
          gofmt-command "goimports"
@@ -55,6 +59,7 @@ This function should only modify configuration layer settings."
          go-backend 'lsp)
      react
      rust
+     ;; https://github.com/emacs-lsp/lsp-mode
      typescript
      (javascript :variables
                  node-add-modules-path t
