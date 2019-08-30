@@ -76,10 +76,11 @@ This function should only modify configuration layer settings."
      protobuf
      ;; shell
      (shell :variables
-            shell-default-shell 'multi-term
-            shell-default-term-shell "/bin/zsh"
-            shell-default-position 'bottom
-            shell-default-height 30)
+            shell-default-shell 'multi-term            
+            shell-default-position 'full
+            shell-default-full-span t
+            ;;shell-default-height 30
+            shell-default-term-shell "/bin/zsh")
      ;;dap     
      )
 
@@ -514,6 +515,16 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (editorconfig-mode 1)
+  (defun spacemacs/go-run-test-current-function ()
+    (interactive)
+    (if (string-match "_test\\.go" buffer-file-name)
+        (let ((test-method (if go-use-gocheck-for-testing
+                               "-check.f"
+                             "-run")))
+          (save-excursion
+            (re-search-backward "^func[ ]+\\(([[:alnum:]]*?[ ]?[*]?[[:alnum:]]+)[ ]+\\)?\\(Test[[:alnum:]_]+\\)(.*)")
+            (spacemacs/go-run-tests (concat test-method "='" (match-string-no-properties 2) "'"))))
+      (message "Must be in a _test.go file to run go-run-test-current-function")))
   ;;(eval-after-load 'flycheck
   ;;  '(add-hook 'flycheck-mode-hook #'flycheck-golangci-lint-setup))
   ;;(setq configuration-layer--elpa-archives
