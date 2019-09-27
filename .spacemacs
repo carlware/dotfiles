@@ -37,15 +37,20 @@ This function should only modify configuration layer settings."
           lsp-ui-sideline-enable nil)
      emacs-lisp
      helm
-     ;; multiple-cursors
+     (multiple-cursors :variables
+                       multiple-cursors-backend 'mc
+                       mc/cmds-to-run-once '(upcase-region))
      ;; tools
      neotree
      auto-completion
+     ;; (auto-completion :variables
+     ;;                auto-completion-return-key-behavior t
+     ;;                auto-completion-tab-key-behavior 'complete)
      syntax-checking ;; might require dictionary ispell, hunspell, aspell
      git
      docker
-     (spell-checking :variables 
-      spell-checking-enable-by-default nil
+     (spell-checking :variables
+      spell-checking-enable-by-default t
       spell-checking-enable-auto-dictionary t)
      ;; org
      ;; version-control
@@ -56,6 +61,7 @@ This function should only modify configuration layer settings."
          go-use-golangci-lint t
          gofmt-command "goimports"
          go-format-before-save t
+         godoc-at-point-function 'godoc-gogetdoc
          go-backend 'lsp)
      react
      rust
@@ -68,7 +74,10 @@ This function should only modify configuration layer settings."
      (python :variables
              python-backend 'lsp
              python-enable-yapf-format-on-save t)
+     java
      ;; text editors
+     sql
+     ;; csv
      yaml
      html
      markdown
@@ -76,12 +85,12 @@ This function should only modify configuration layer settings."
      protobuf
      ;; shell
      (shell :variables
-            shell-default-shell 'multi-term            
+            shell-default-shell 'eshell
             shell-default-position 'full
             shell-default-full-span t
             ;;shell-default-height 30
             shell-default-term-shell "/bin/zsh")
-     ;;dap     
+     ;;dap
      )
 
    ;; List of additional packages that will be installed without being
@@ -492,12 +501,18 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 (setq-default git-magit-status-fullscreen t)
 ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
 (setenv "GO111MODULE" "on")
+(spacemacs/set-leader-keys "ok" 'kill-other-buffers)
 (defun kill-other-buffers ()
   "Kill all other buffers."
   (interactive)
   (mapc 'kill-buffer
         (delq (current-buffer)
               (remove-if-not 'buffer-file-name (buffer-list)))))
+
+(defun to-underscore ()
+  (interactive)
+  (progn (replace-regexp "\\([A-Z]\\)" "_\\1" nil (region-beginning) (region-end))
+         (downcase-region (region-beginning) (region-end))))
 )
 
 
