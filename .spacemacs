@@ -64,7 +64,8 @@ This function should only modify configuration layer settings."
          godoc-at-point-function 'godoc-gogetdoc
          go-backend 'lsp)
      react
-     rust
+     (rust :variables
+           rust-format-on-save t)
      ;; https://github.com/emacs-lsp/lsp-mode
      typescript
      (javascript :variables
