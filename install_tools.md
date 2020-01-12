@@ -1,3 +1,4 @@
+```
 # golang language
 go1.12.5 get -u -v github.com/rogpeppe/godef
 go1.12.5 get -u -v golang.org/x/tools/cmd/guru
@@ -84,3 +85,4 @@ ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" /usr/loca
 
 # video
 https://github.com/mattingalls/Soundflower/releases/tag/2.0b2
+```
