@@ -24,6 +24,7 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 xcode-select --install
 
+brew cask install kap
 brew install tmux
 brew tap ktr0731/evans
 brew install evans
@@ -42,10 +43,14 @@ brew install watchman
 brew install node
 brew install ffmpeg
 brew install ispell
+brew install watch
+brew install rbenv
+brew install the_silver_searcher
 go1.12.5 get github.com/mfuentesg/ksd
 brew tap AdoptOpenJDK/openjdk
 brew cask install adoptopenjdk8
 brew cask install virtualbox
+brew cask install genymotion
 brew cask install keycastr
 brew cask install android-platform-tools
 brew cask install android-studio
