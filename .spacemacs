@@ -70,20 +70,25 @@ This function should only modify configuration layer settings."
            rust-format-on-save t)
      ;; https://github.com/emacs-lsp/lsp-mode
      (typescript :variables
-              ;typescript-lsp-linter t 
+              ;typescript-lsp-linter t
               typescript-fmt-tool 'typescript-formatter
               typescript-fmt-on-save t
               typescript-backend 'tide
               )
-     (javascript :variables              
+     (javascript :variables
                  javascript-import-tool 'import-js
                  javascript-fmt-tool 'prettier
-                 javascript-fmt-on-save t   
+                 javascript-fmt-on-save t
                  node-add-modules-path t
                  javascript-backend 'tide)
      (python :variables
              python-backend 'lsp
              python-enable-yapf-format-on-save t)
+     ;; plantuml
+     (plantuml :variables
+               ;; plantuml-executable-path "/usr/local/bin/plantuml"
+               plantuml-jar-path "~/plantuml.jar"
+               plantuml-default-exec-mode 'jar)
      java
      ;; text editors
      sql
@@ -114,7 +119,6 @@ This function should only modify configuration layer settings."
     ;; protobuf-mode
     editorconfig
     kubernetes
-    plantuml-mode
     ;;dap-mode
     ;;dap-go
     )
