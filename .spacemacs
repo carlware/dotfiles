@@ -32,8 +32,10 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '((lsp :variables
+   '(
+     (lsp :variables
           lsp-ui-doc-enable nil
+          lsp-ui-sideline-show-symbol t
           lsp-ui-sideline-enable nil)
      emacs-lisp
      helm
@@ -42,10 +44,10 @@ This function should only modify configuration layer settings."
                        mc/cmds-to-run-once '(upcase-region))
      ;; tools
      neotree
-     auto-completion
-     ;; (auto-completion :variables
-     ;;                auto-completion-return-key-behavior t
-     ;;                auto-completion-tab-key-behavior 'complete)
+     ;;auto-completion
+      (auto-completion :variables
+                     auto-completion-return-key-behavior nil
+                     auto-completion-tab-key-behavior 'complete)
      syntax-checking ;; might require dictionary ispell, hunspell, aspell
      git
      docker
@@ -67,11 +69,18 @@ This function should only modify configuration layer settings."
      (rust :variables
            rust-format-on-save t)
      ;; https://github.com/emacs-lsp/lsp-mode
-     typescript
-     (javascript :variables
+     (typescript :variables
+              ;typescript-lsp-linter t 
+              typescript-fmt-tool 'typescript-formatter
+              typescript-fmt-on-save t
+              typescript-backend 'tide
+              )
+     (javascript :variables              
+                 javascript-import-tool 'import-js
+                 javascript-fmt-tool 'prettier
+                 javascript-fmt-on-save t   
                  node-add-modules-path t
-                 javascript-backend 'lsp
-                 javascript-fmt-tool 'prettier)
+                 javascript-backend 'tide)
      (python :variables
              python-backend 'lsp
              python-enable-yapf-format-on-save t)
@@ -105,6 +114,7 @@ This function should only modify configuration layer settings."
     ;; protobuf-mode
     editorconfig
     kubernetes
+    plantuml-mode
     ;;dap-mode
     ;;dap-go
     )
@@ -252,11 +262,16 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-colorize-cursor-according-to-state t
 
    ;; Default font or prioritized list of fonts.
-   dotspacemacs-default-font '("Menlo"
-                               :size 16
-                               :weight normal
+   dotspacemacs-default-font '(("Fira Code"
+                               :size 18
+                               :weight medium
                                :width normal
                                :powerline-scale 1.1)
+                               ("Fira Code Symbol"
+                               :size 18
+                               :weight normal
+                               :width normal
+                               :powerline-scale 1.1))
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
@@ -530,6 +545,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (setq ns-right-alternate-modifier nil)
   (editorconfig-mode 1)
   (defun spacemacs/go-run-test-current-function ()
     (interactive)
@@ -548,4 +564,44 @@ before packages are loaded."
   ;;         ("org" . "http://orgmode.org/elpa/")
   ;;         ("gnu" . "https://elpa.gnu.org/packages/")))
   ;;(setq-default package-archives configuration-layer--elpa-archives)
+;; Font Ligatures
+  (defun my-correct-symbol-bounds (pretty-alist)
+      "Prepend a TAB character to each symbol in this alist,
+  this way compose-region called by prettify-symbols-mode
+  will use the correct width of the symbols
+  instead of the width measured by char-width."
+      (mapcar (lambda (el)
+                (setcdr el (string ?\t (cdr el)))
+                el)
+              pretty-alist))
+
+  (defun my-ligature-list (ligatures codepoint-start)
+      "Create an alist of strings to replace with
+  codepoints starting from codepoint-start."
+      (let ((codepoints (-iterate '1+ codepoint-start (length ligatures))))
+        (-zip-pair ligatures codepoints)))
+
+  (setq my-fira-code-ligatures
+      (let* ((ligs '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\"
+                    "{-" "[]" "::" ":::" ":=" "!!" "!=" "!==" "-}"
+                    "--" "---" "-->" "->" "->>" "-<" "-<<" "-~"
+                    "#{" "#[" "##" "###" "####" "#(" "#?" "#_" "#_("
+                    ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*"
+                    "/**" "/=" "/==" "/>" "//" "///" "&&" "||" "||="
+                    "|=" "|>" "^=" "$>" "++" "+++" "+>" "=:=" "=="
+                    "===" "==>" "=>" "=>>" "<=" "=<<" "=/=" ">-" ">="
+                    ">=>" ">>" ">>-" ">>=" ">>>" "<*" "<*>" "<|" "<|>"
+                    "<$" "<$>" "<!--" "<-" "<--" "<->" "<+" "<+>" "<="
+                    "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<" "<~"
+                    "<~~" "</" "</>" "~@" "~-" "~=" "~>" "~~" "~~>" "%%"
+                    "x" ":" "+" "+" "*")))
+        (my-correct-symbol-bounds (my-ligature-list ligs #Xe100))))
+
+  (defun my-set-fira-code-ligatures ()
+      "Add fira code ligatures for use with prettify-symbols-mode."
+      (setq prettify-symbols-alist
+            (append my-fira-code-ligatures prettify-symbols-alist))
+      (prettify-symbols-mode))
+
+  (add-hook 'prog-mode-hook 'my-set-fira-code-ligatures)
 )

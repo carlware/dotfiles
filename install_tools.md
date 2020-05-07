@@ -12,8 +12,14 @@ go1.12.5 get -u -v github.com/davidrjenni/reftools/cmd/fillstruct
 go1.12.5 get -u github.com/josharian/impl
 GO111MODULE=on go1.12.5 get golang.org/x/tools/gopls@latest
 
-# javasvript language
+# javascript language
 npm install -g javascript-typescript-langserver
+npm install -g eslint babel-eslint eslint-plugin-react
+npm install -g typescript typescript-language-server
+npm install -g import-js
+npm install -g js-beautify prettier
+npm install -g tslint
+npm install -g typescript-formatter
 
 # rust language
 cargo install rustfmt
