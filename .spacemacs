@@ -35,8 +35,10 @@ This function should only modify configuration layer settings."
    '(
      (lsp :variables
           lsp-ui-doc-enable nil
+          lsp-navigation 'peek
           lsp-ui-sideline-show-symbol t
-          lsp-ui-sideline-enable nil)
+          lsp-ui-sideline-enable nil
+          )
      emacs-lisp
      helm
      (multiple-cursors :variables
@@ -44,10 +46,10 @@ This function should only modify configuration layer settings."
                        mc/cmds-to-run-once '(upcase-region))
      ;; tools
      neotree
-     ;;auto-completion
-      (auto-completion :variables
-                     auto-completion-return-key-behavior nil
-                     auto-completion-tab-key-behavior 'complete)
+     auto-completion
+      ;; (auto-completion :variables
+      ;;                auto-completion-return-key-behavior nil
+      ;;                auto-completion-tab-key-behavior 'complete)
      syntax-checking ;; might require dictionary ispell, hunspell, aspell
      git
      docker
@@ -60,6 +62,7 @@ This function should only modify configuration layer settings."
      ;; languages
      ;; http://develop.spacemacs.org/layers/+lang/go/README.html#configuration
      (go :variables
+         go-tab-width nil
          go-use-golangci-lint t
          gofmt-command "goimports"
          go-format-before-save t
@@ -68,6 +71,7 @@ This function should only modify configuration layer settings."
      react
      (rust :variables
            rust-format-on-save t)
+     import-js
      ;; https://github.com/emacs-lsp/lsp-mode
      (typescript :variables
               ;typescript-lsp-linter t
@@ -76,11 +80,15 @@ This function should only modify configuration layer settings."
               typescript-backend 'tide
               )
      (javascript :variables
+                 js2-basic-offset 2
                  javascript-import-tool 'import-js
                  javascript-fmt-tool 'prettier
                  javascript-fmt-on-save t
-                 node-add-modules-path t
+                 ;; node-add-modules-path t
                  javascript-backend 'tide)
+     (json :variables
+           json-fmt-on-save t
+           json-fmt-tool 'prettier)
      (python :variables
              python-backend 'lsp
              python-enable-yapf-format-on-save t)
@@ -117,8 +125,11 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(
     ;; protobuf-mode
+    lsp-mode
+    lsp-ui
     editorconfig
     kubernetes
+    cucumber
     ;;dap-mode
     ;;dap-go
     )
@@ -128,6 +139,7 @@ This function should only modify configuration layer settings."
 
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
+    company-go
     lsp-python-ms
     evil-magit
     )
@@ -557,9 +569,14 @@ before packages are loaded."
         (let ((test-method (if go-use-gocheck-for-testing
                                "-check.f"
                              "-run")))
+          (let ((result "")))
           (save-excursion
             (re-search-backward "^func[ ]+\\(([[:alnum:]]*?[ ]?[*]?[[:alnum:]]+)[ ]+\\)?\\(Test[[:alnum:]_]+\\)(.*)")
-            (spacemacs/go-run-tests (concat test-method "='" (match-string-no-properties 2) "'"))))
+            (setq result (concat test-method "='" (match-string-no-properties 2) "'"))
+            (re-search-backward "^//[ \+]*build[ ]+\\(([[:alnum:]]*?[ ]?[*]?[[:alnum:]]+)[ ]+\\)?\\([[:alnum:]_]+\\)")
+            (setq result (concat result " -tags=" (match-string-no-properties 2) ))
+            (spacemacs/go-run-tests result )
+            ))
       (message "Must be in a _test.go file to run go-run-test-current-function")))
   ;;(eval-after-load 'flycheck
   ;;  '(add-hook 'flycheck-mode-hook #'flycheck-golangci-lint-setup))
