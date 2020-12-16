@@ -545,6 +545,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (interactive)
   (progn (replace-regexp "\\([A-Z]\\)" "_\\1" nil (region-beginning) (region-end))
          (downcase-region (region-beginning) (region-end))))
+
+(setq byte-compile-warnings '(cl-function))
+(setq ls-lisp-use-insert-directory-program t)
+(setq insert-directory-program "/usr/local/opt/coreutils/libexec/gnubin/ls")
 )
 
 
