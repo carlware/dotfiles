@@ -3,12 +3,6 @@
 [core]
 	autocrlf = input
 	editor = /usr/bin/vim
-[difftool "sourcetree"]
-	cmd = /usr/local/bin/bcomp $LOCAL $REMOTE
-	path = 
-[mergetool "sourcetree"]
-	cmd = /usr/local/bin/bcomp $LOCAL $REMOTE $BASE $MERGED
-	trustExitCode = true
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
@@ -41,6 +35,8 @@
   flict = diff --name-only --diff-filter=U
   c = checkout
  	d = difftool --tool=vimdiff --no-prompt
+[push]
+	default = current
 [diff]
 	tool = vimdiff
 [merge]
