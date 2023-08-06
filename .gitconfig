@@ -45,3 +45,7 @@
 	prompt = false
 	# Be able to abort all diffs with `:cq` or `:cquit`
 	trustExitCode = true
+[http]
+  lowSpeedLimit = 10000
+  lowSpeedTime = 6000
+  
