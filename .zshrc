@@ -45,3 +45,6 @@ source "$HOME/.cargo/env"
 
 # docker and kubernetes
 source ~/.docker.sh
+
+# misc utils
+source ~/.utils.sh
