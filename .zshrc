@@ -18,6 +18,15 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 # Fig pre block. Keep at the top of this file.
 [[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 
+# asdf
+. $(brew --prefix asdf)/asdf.sh
+
+# misc alias
+alias flush-cache='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
+
+# flutter
+export PATH=$PATH:~/development/flutter/bin
+
 # golang
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
@@ -31,12 +40,8 @@ source ~/.zsh/zsh-peco-history/zsh-peco-history.zsh
 export HISTCONTROL=ignorespace
 export GPG_TTY=$(tty)
 
-alias flush-cache='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
+# rust
+source "$HOME/.cargo/env"
 
-# docker and k8s
-#alias drdv="docker volume rm $(docker volume ls -qf dangling=true)"
-#alias drdi="docker rmi $(docker images -q -f dangling=true)"
-alias dc='docker-compose'
-alias d='docker'
-alias kc='kubectl'
-alias dm='docker-machine'
+# docker and kubernetes
+source ~/.docker.sh
