@@ -2,7 +2,7 @@ export ZSH="/Users/carlosramirez/.oh-my-zsh"
 ZSH_THEME="gozilla"
 # ZSH_THEME="spaceship"
 
-plugins=(git macos z)
+plugins=(git macos z sublime ag)
 source $ZSH/oh-my-zsh.sh
 
 # default editor
