@@ -16,6 +16,8 @@
   cl = clean -f -d 
   co = checkout
   fix = commit --amend
+  p = push
+  sha = rev-parse HEAD
   pf = push --force-with-lease
   st = status
   mup = !git checkout master && git pull && git checkout -
@@ -23,6 +25,7 @@
   sls = log --pretty=format:\"[%h] %ae, %ar: %s\" --stat
   glog = log -E -i --grep
   uncommit = reset --soft HEAD^
+  unci = reset --hard HEAD~1
   rsci = !SKIP_RUBOCOP=true git commit -v
   browse = !hub browse
   compare = !hub compare
