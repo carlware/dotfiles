@@ -5,8 +5,9 @@
 xcode-select --install
 
 # basic utilities
-brew cask install kap
-brew cask install keycastr
+brew install --cask kap
+brew install --cask keycastr
+brew install --cask privileges
 brew install tmux
 brew install fzf
 brew install htop
@@ -18,6 +19,7 @@ brew install lnav
 brew install asdf
 brew install hey
 brew install the_silver_searcher
+
 
 # sublime shortcut
 ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" /usr/local/bin
